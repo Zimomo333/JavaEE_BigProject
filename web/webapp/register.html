@@ -1,0 +1,134 @@
+<html>
+<head>
+	<meta http-equiv="pragma" content="no-cache"> 
+    <meta http-equiv="Cache-Control " content="no-cache,must-revalidate"> 
+    <meta name="description" content="">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="icon" href="images/favicon.ico">
+	<title>广东正诚电器科技有限公司</title>
+	<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="./style.css">
+
+	<script type="text/javascript" src="jQuery/jquery.min.js"></script>
+
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        input{width: 100px;}
+    </style>
+</head>
+<body>
+	<div class="container">
+		<div class="content" style="margin-top: -260px;height: 570px;">
+			<h1 style="font-weight: bold;font-size: 40px;">用户注册</h1>
+			<form action="check_login.php" method="post">
+                <div class="input-group input-group-lg" style="margin-top:30px;margin-left: 80px;">
+                    <span class="input-group-addon" id="sizing-addon1" ><span class="glyphicon glyphicon-user" aria-hidden="true" style="color: black">　　账号　</span></span>
+                    <input type="text" class="form-control"id="account" placeholder="Username" aria-describedby="sizing-addon1" autofocus style="width: 400px;" >
+                </div>
+
+                <div class="input-group input-group-lg" style="margin-top:20px;margin-left: 80px;">
+                    <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-user" aria-hidden="true" style="color: black">　　姓名　</span></span>
+                    <input type="text" class="form-control" id="name" placeholder="Name" aria-describedby="sizing-addon2" style="width: 400px;">
+                </div>
+
+                <div class="input-group input-group-lg" style="margin-top:20px;margin-left: 80px;">
+                    <span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-earphone" aria-hidden="true" style="color: black">　　电话　</span></span>
+                    <input type="text" class="form-control"  id="phone" placeholder="telephone" aria-describedby="sizing-addon3" style="width: 400px;">
+                </div>
+
+                <div class="input-group input-group-lg" style="margin-top:20px;margin-left: 80px;">
+                    <span class="input-group-addon" id="sizing-addon4"><span class="glyphicon glyphicon-lock" aria-hidden="true" style="color: black">　　密码　</span></span>
+                    <input type="password" class="form-control" id="password1" placeholder="Password" aria-describedby="sizing-addon4" style="width: 400px;">
+                </div>
+
+                <div class="input-group input-group-lg" style="margin-top:20px;margin-left: 80px;margin-bottom: 30px;">
+                    <span class="input-group-addon" id="sizing-addon5"><span class="glyphicon glyphicon-lock" aria-hidden="true" style="color: black">　确认密码</span></span>
+                    <input type="password" class="form-control" id="password2" placeholder="Password" aria-describedby="sizing-addon5" style="width: 400px;">
+                </div>
+
+                <div class="form-group" style="margin-bottom:235px;">
+                <input type="button" class="btn btn-info btn-block" id="btn_register" style="width:200px;margin:0 auto;font-size: 20px;" value="注册">
+                </div>
+        </form>
+            <div style="margin-top: -230px;font-size: 20px;">
+                <label style="color:white;margin-left: 480px;">老客户，<a href="../login.html" style="font-size: 30px;color:white;">马上登陆</a></label>
+            </div>
+		</div>
+	</div>
+<!-- <script src="/static/bundle.js"></script> -->
+</body>
+</html>
+
+<script>
+    $(function () {
+        $("#btn_register").click(function () {
+            var account = document.getElementById("account");
+            var name = document.getElementById("name");
+            var phone = document.getElementById("phone");
+            var password1 = document.getElementById("password1");
+            var password2 = document.getElementById("password2");
+            var flag = 1;
+
+            if (account.value == "") {
+                alert("账号不能为空!");
+                flag = 0;
+            }
+            else {
+                if (name.value == "") {
+                    alert("姓名不能为空!");
+                    flag = 0;
+                }
+                else {
+                    if (phone.value == "") {
+                        alert("电话号码不能为空!");
+                        flag = 0;
+                    }
+                    else {
+                        var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                        if (!myreg.test(phone.value)) {
+                            alert("手机号码有误，请重填");
+                            flag = 0;
+                        } else {
+                            if (password1.value == "") {
+                                alert("密码不能为空!");
+                                flag = 0;
+                            } else {
+                                if (password2.value == "") {
+                                    alert("请确认密码!");
+                                    flag = 0;
+                                } else {
+                                    if (password1.value != password2.value) {
+                                        alert("两次输入的密码不一致!");
+                                        flag = 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (flag == 1) {
+                $.get(
+                    "/RegisterCheckServlet",
+                    {
+                        account:account.value,
+                        username:name.value,
+                        phone:phone.value,
+                        password:password1.value},
+                    function (data) {
+                        var exit = data.exit;
+                        if (exit == 1) {
+                            alert("该用户名已存在");
+                        }
+                        else {
+                            alert("注册成功，点击确认后返回登陆页面");
+                            window.location.href = "../login.html";
+                        }
+                    }
+                );
+            }
+        });
+    });
+</script>
