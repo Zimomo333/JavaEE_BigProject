@@ -35,7 +35,7 @@ public class OrderTools {
                 orders.setOrderNumber(dbUtil_bo.rs.getInt("orderNumber"));
                 orders.setUserAccount(dbUtil_bo.rs.getString("userAccount"));
                 orders.setStaffAccount(dbUtil_bo.rs.getString("staffAccount"));
-                orders.setPaid(dbUtil_bo.rs.getFloat("paid"));
+                orders.setPaid(dbUtil_bo.rs.getDouble("paid"));
                 orders.setAddress(dbUtil_bo.rs.getString("address"));
                 orders.setRequest(dbUtil_bo.rs.getString("request"));
                 orders.setRequestMaterial(dbUtil_bo.rs.getString("requestMaterial"));

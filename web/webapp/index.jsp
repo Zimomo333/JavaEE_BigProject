@@ -11,7 +11,7 @@
 <%@ page import="ProductionManager.ProductionTools" %>
 <%@ page import="ProductionManager.Produce" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="ch">
 
     <head>
@@ -22,8 +22,6 @@
         <link rel="shortcut icon" href="images/favicon.ico">
         <link rel="icon" href="images/favicon.ico">
         <title>广东正诚电气科技有限公司</title>
-        <!--引入wangeditor的css文件-->
-        <link rel="stylesheet" type="text/css" href="wangeditor/dist/css/wangEditor.min.css">
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
@@ -385,7 +383,6 @@
 
                     <!--我的订单管理模块-->
                     <div role="tabpanel" class="tab-pane" id="my">
-
                             <!--显示内容-->
                             <div class="data-div">
                                 <div class="row tableHeader">
@@ -417,176 +414,19 @@
                                         完成日期
                                     </div>
                                 </div>
-                                <div class="tablebody" id="myOrder">
+                                <div class="tablebody" id="myOrder1">
                                 </div>
                             </div>
                             <tr>
                                 <td colspan="5">
-                                    <button onclick="page(this)" class="frstn">首页</button>
-                                    <button onclick="page(this)" class="prvtn">上一页</button>
-                                    <span id="page"></span>
-                                    <button onclick="page(this)" class="nxttn">下一页</button>
-                                    <button onclick="page(this)" class="lsttn">尾页</button>
+                                    <button onclick="page(this)" class="frstn1">首页</button>
+                                    <button onclick="page(this)" class="prvtn1">上一页</button>
+                                    <span id="page1"></span>
+                                    <button onclick="page(this)" class="nxttn1">下一页</button>
+                                    <button onclick="page(this)" class="lsttn1">尾页</button>
                                 </td>
                             </tr>
-
-                    </div>
-                    <script type="text/javascript">
-                        $(function(){
-                            $.ajax({
-                                url:"/AjaxServlet",
-                                data:"",
-                                dataType:"json",
-                                type:"post",
-                                success:function(obj){
-                                    for(var i=0;i<obj[0]["length"];i++){
-                                        $("#myOrder").append(
-                                            "<div class='row'>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[i]["orderNumber"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"
-                                            +obj[i]["userAccount"]+""+
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"
-                                            +obj[i]["staffAccount"]+""+
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[i]["paid"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            obj[i]["address"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[i]["isAccept"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[i]["isCompletion"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            getLocalTime(obj[i]["startDate"])+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            getLocalTime(obj[i]["realDate"])+"" +
-                                            "</div>" +
-                                            "</div>"
-                                        )
-                                    }
-                                }
-                            });
-                        })
-                        $(function() {
-                            $.ajax({
-                                url:"/AjaxServlet?method=getPage",
-                                data:"",
-                                dataType:"json",
-                                type:"post",
-                                success:function(obj){
-                                    console.log()
-                                    $("#page").text(obj["currentPage"] + "/" + obj["lastPage"]);
-                                    $(".frstn")[0].id=1;
-                                    $(".prvtn")[0].id=obj["prePage"];
-                                    $(".nxttn")[0].id=obj["nextPage"];
-                                    $(".lsttn")[0].id=obj["lastPage"];
-                                }
-                            });
-                        })
-                        function page(btn){
-                            var page=btn.id;
-                            $.ajax({
-                                url:"/AjaxServlet?method=changePage",
-                                type:"post",
-                                data:{
-                                    page:page
-                                },
-                                dataType:"json",
-                                success:function(obj){
-
-                                    $("#page").text(obj[0]["currentPage"]+"/"+obj[0]["lastPage"]);
-                                    $(".frstn")[0].id=1;
-                                    $(".prvtn")[0].id=obj[0]["prePage"];
-                                    $(".nxttn")[0].id=obj[0]["nextPage"];
-                                    $(".lsttn")[0].id=obj[0]["lastPage"];
-
-                                    for(var i=0;i<obj[0]["pageSize"];i++){
-                                        $("#myOrder").children().remove();
-                                    }
-
-                                    for(var i=0;i<obj[1]["length"];i++){
-                                        $("#myOrder").append(
-                                            "<div class='row'>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[1][i]["orderNumber"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"
-                                            +obj[1][i]["userAccount"]+""+
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"
-                                            +obj[1][i]["staffAccount"]+""+
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[1][i]["paid"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            obj[1][i]["address"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[1][i]["isAccept"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[1][i]["isCompletion"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            getLocalTime(obj[1][i]["startDate"])+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            getLocalTime(obj[1][i]["realDate"])+"" +
-                                            "</div>" +
-                                            "</div>"
-                                        )
-                                    }
-                                }
-                            });
-                        }
-
-                        function getLocalTime(nS) {
-                            return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
-                        }
-                    </script>
-                    <script src="js/jquery.nouislider.js"></script>
-
-                    <!-- this page specific inline scripts -->
-                    <script>
-                        //min/max slider
-                        function huadong(my, unit, def, max) {
-                            $(my).noUiSlider({
-                                range: [0, max],
-                                start: [def],
-                                handles: 1,
-                                connect: 'upper',
-                                slide: function () {
-                                    var val = Math.floor($(this).val());
-                                    $(this).find(".noUi-handle").text(
-                                        val + unit
-                                    );
-                                    console.log($(this).find(".noUi-handle").parent().parent().html());
-                                },
-                                set: function () {
-                                    var val = Math.floor($(this).val());
-                                    $(this).find(".noUi-handle").text(
-                                        val + unit
-                                    );
-                                }
-                            });
-                            $(my).val(def, true);
-                        }
-                        huadong('.slider-minmax1', "分钟", "5", 30);
-                        huadong('.slider-minmax2', "分钟", "6", 15);
-                        huadong('.slider-minmax3', "分钟", "10", 60);
-                        huadong('.slider-minmax4', "次", "2", 10);
-                        huadong('.slider-minmax5', "天", "3", 7);
-                        huadong('.slider-minmax6', "天", "8", 10);
-                    </script>
+                        </div>
 
                     <!-- 添加订单模块 -->
                     <div role="tabpanel" class="tab-pane" id="add_order">
@@ -919,128 +759,6 @@
                     </div>
 
                     <%--承接订单所需JavaScript--%>
-                    <script type="text/javascript">
-                        $(function(){
-                            $.ajax({
-                                url:"/AjaxServlet",
-                                data:"",
-                                dataType:"json",
-                                type:"post",
-                                success:function(obj){
-                                    for(var i=0;i<obj.length;i++){
-                                        $("#myOrder").append(
-                                            "<div class='row'>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[i]["orderNumber"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"
-                                            +obj[i]["userAccount"]+""+
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"
-                                            +obj[i]["staffAccount"]+""+
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[i]["paid"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            obj[i]["address"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[i]["isAccept"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[i]["isCompletion"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            getLocalTime(obj[i]["startDate"])+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            getLocalTime(obj[i]["realDate"])+"" +
-                                            "</div>" +
-                                            "</div>"
-                                        )
-                                    }
-                                }
-                            });
-                        })
-                        $(function() {
-                            $.ajax({
-                                url:"/AjaxServlet?method=getPage",
-                                data:"",
-                                dataType:"json",
-                                type:"post",
-                                success:function(obj){
-                                    console.log()
-                                    $("#page").text(obj["currentPage"] + "/" + obj["lastPage"]);
-                                    $(".frstn")[0].id=1;
-                                    $(".prvtn")[0].id=obj["prePage"];
-                                    $(".nxttn")[0].id=obj["nextPage"];
-                                    $(".lsttn")[0].id=obj["lastPage"];
-                                }
-                            });
-                        })
-                        function page(btn){
-                            var page=btn.id;
-                            $.ajax({
-                                url:"/AjaxServlet?method=changePage",
-                                type:"post",
-                                data:{
-                                    page:page
-                                },
-                                dataType:"json",
-                                success:function(obj){
-
-                                    $("#page").text(obj[0]["currentPage"]+"/"+obj[0]["lastPage"]);
-                                    $(".frstn")[0].id=1;
-                                    $(".prvtn")[0].id=obj[0]["prePage"];
-                                    $(".nxttn")[0].id=obj[0]["nextPage"];
-                                    $(".lsttn")[0].id=obj[0]["lastPage"];
-
-                                    for(var i=0;i<obj[0]["pageSize"];i++){
-                                        $("#myOrder").children().remove();
-                                    }
-
-                                    for(var i=0;i<obj[1]["length"];i++){
-                                        $("#myOrder").append(
-                                            "<div class='row'>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[1][i]["orderNumber"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"
-                                            +obj[1][i]["userAccount"]+""+
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"
-                                            +obj[1][i]["staffAccount"]+""+
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[1][i]["paid"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            obj[1][i]["address"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[1][i]["isAccept"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-1'>"+
-                                            obj[1][i]["isCompletion"]+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            getLocalTime(obj[1][i]["startDate"])+"" +
-                                            "</div>" +
-                                            "<div class='col-xs-2'>"+
-                                            getLocalTime(obj[1][i]["realDate"])+"" +
-                                            "</div>" +
-                                            "</div>"
-                                        )
-                                    }
-                                }
-                            });
-                        }
-
-                        function getLocalTime(nS) {
-                            return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
-                        }
-                    </script>
                     <script>
                         $(function () {
                             $(".btn_AcceptOrder").click(function () {
@@ -1958,90 +1676,132 @@
                                     完成日期
                                 </div>
                             </div>
-
-                            <%--订单内容显示--%>
-                            <%
-                                if(showInfo.getPower() == 1) {
-                                    OrderTools orderTools = new OrderTools();
-                                    List OrderList = orderTools.GetRs();
-                                    for (int i = 0; i < OrderList.size(); i++) {
-                                        Orders orders = (Orders)OrderList.get(i);
-                            %>
-                            <div class="tablebody">
-                                <div class="row">
-                                    <div class="col-xs-1">
-                                        <%=orders.getOrderNumber()%>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        <%=orders.getUserAccount()%>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        <%=orders.getStaffAccount()%>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        <%=orders.getPaid()%>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        <%=orders.getAddress()%>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        <%=(orders.getIsAccept().equals("0"))?"未接单":"已接单"%>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        <%=(orders.getIsDistribute().equals("0"))?"未备材料":"已备材料"%>
-                                    </div>
-                                    <div class="col-xs-1">
-                                        <%=(orders.getIsCompletion().equals("0"))?"未完成":"已完成"%>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <%=orders.getStartDate()%>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <%=orders.getRealDate()%>
-                                    </div>
-                                </div>
+                            <div class="tablebody" id="myOrder">
                             </div>
-                            <%
+                        </div>
+                        <tr>
+                            <td colspan="5">
+                                <button onclick="page(this)" class="frstn">首页</button>
+                                <button onclick="page(this)" class="prvtn">上一页</button>
+                                <span id="page"></span>
+                                <button onclick="page(this)" class="nxttn">下一页</button>
+                                <button onclick="page(this)" class="lsttn">尾页</button>
+                            </td>
+                        </tr>
+
+                    </div>
+                    <script type="text/javascript">
+                        $(function(){
+                            $.ajax({
+                                url:"/AjaxServlet",
+                                data:{},
+                                dataType:"json",
+                                type:"post",
+                                success:function(obj){
+                                    for(var i=0;i<obj[1].length;i++){
+                                        $("#myOrder").append(
+                                            "<div id='temp'>"+
+                                            "<div class='row'>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].orderNumber +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].userAccount +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"
+                                            +obj[1][i].staffAccount +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].paid +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].address +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].isAccept +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].isCompletion +
+                                            "</div>" +
+                                            "<div class='col-xs-2'>"+
+                                            getLocalTime(obj[1][i].startDate) +
+                                            "</div>" +
+                                            "<div class='col-xs-2'>"+
+                                            getLocalTime(obj[1][i].realDate) +
+                                            "</div>" +
+                                            "</div>"+
+                                            "</div>"
+                                        )
+                                    }
+                                    $("#page").text(obj[0].currentPage+"/"+obj[0].lastPage);
+                                    $(".frstn")[0].id=1;
+                                    $(".prvtn")[0].id=obj[0].prePage;
+                                    $(".nxttn")[0].id=obj[0].nextPage;
+                                    $(".lsttn")[0].id=obj[0].lastPage;
+                                }
+                            });
+                        })
+                        function page(btn){
+                            var page=btn.id;
+                            $.ajax({
+                                url:"/AjaxServlet?method=changePage&page="+page,
+                                type:"post",
+                                data:{},
+                                dataType:"json",
+                                success:function(obj){
+                                    //alert(obj[1].length);
+                                    $("#page1").text(obj[0].currentPage+"/"+obj[0].lastPage);
+                                    $(".frstn")[0].id=1;
+                                    $(".prvtn")[0].id=obj[0].prePage;
+                                    $(".nxttn")[0].id=obj[0].nextPage;
+                                    $(".lsttn")[0].id=obj[0].lastPage;
+                                    for(var i=0;i<obj[0].pageSize;i++){
+                                        $("#temp").remove();
+                                    }
+
+                                    for(var i=0;i<obj[1].length;i++){
+                                        $("#myOrder").append(
+                                            "<div id='temp'>"+
+                                            "<div class='row'>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].orderNumber +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"
+                                            +obj[1][i].userAccount +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"
+                                            +obj[1][i].staffAccount +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].paid +
+                                            "</div>" +
+                                            "<div class='col-xs-2'>"+
+                                            obj[1][i].address +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].isAccept +
+                                            "</div>" +
+                                            "<div class='col-xs-1'>"+
+                                            obj[1][i].isCompletion +
+                                            "</div>" +
+                                            "<div class='col-xs-2'>"+
+                                            getLocalTime(obj[1][i].startDate) +
+                                            "</div>" +
+                                            "<div class='col-xs-2'>"+
+                                            getLocalTime(obj[1][i].realDate) +
+                                            "</div>" +
+                                            "</div>"+
+                                            "</div>"
+                                        )
                                     }
                                 }
-                            %>
+                            });
+                        }
 
-                        </div>
-                    </div>
-                    <script src="js/jquery.nouislider.js"></script>
-
-                    <!-- this page specific inline scripts -->
-                    <script>
-                            //min/max slider
-                            function huadong(my, unit, def, max) {
-                                $(my).noUiSlider({
-                                    range: [0, max],
-                                    start: [def],
-                                    handles: 1,
-                                    connect: 'upper',
-                                    slide: function() {
-                                        var val = Math.floor($(this).val());
-                                        $(this).find(".noUi-handle").text(
-                                            val + unit
-                                        );
-                                        console.log($(this).find(".noUi-handle").parent().parent().html());
-                                    },
-                                    set: function() {
-                                        var val = Math.floor($(this).val());
-                                        $(this).find(".noUi-handle").text(
-                                            val + unit
-                                        );
-                                    }
-                                });
-                                $(my).val(def, true);
-                            }
-                            huadong('.slider-minmax1', "分钟", "5", 30);
-                            huadong('.slider-minmax2', "分钟", "6", 15);
-                            huadong('.slider-minmax3', "分钟", "10", 60);
-                            huadong('.slider-minmax4', "次", "2", 10);
-                            huadong('.slider-minmax5', "天", "3", 7);
-                            huadong('.slider-minmax6', "天", "8", 10);
-                        </script>
+                        function getLocalTime(nS) {
+                            return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
+                        }
+                    </script>
 
                     <!-- 删除配件模块 -->
                     <div role="tabpanel" class="tab-pane" id="delete_parts">
@@ -2414,39 +2174,6 @@
                     </div>
 
                     <script src="js/jquery.nouislider.js"></script>
-
-                    <!-- this page specific inline scripts -->
-                    <script>
-                        //min/max slider
-                        function huadong(my, unit, def, max) {
-                            $(my).noUiSlider({
-                                range: [0, max],
-                                start: [def],
-                                handles: 1,
-                                connect: 'upper',
-                                slide: function() {
-                                    var val = Math.floor($(this).val());
-                                    $(this).find(".noUi-handle").text(
-                                        val + unit
-                                    );
-                                    console.log($(this).find(".noUi-handle").parent().parent().html());
-                                },
-                                set: function() {
-                                    var val = Math.floor($(this).val());
-                                    $(this).find(".noUi-handle").text(
-                                        val + unit
-                                    );
-                                }
-                            });
-                            $(my).val(def, true);
-                        }
-                        huadong('.slider-minmax1', "分钟", "5", 30);
-                        huadong('.slider-minmax2', "分钟", "6", 15);
-                        huadong('.slider-minmax3', "分钟", "10", 60);
-                        huadong('.slider-minmax4', "次", "2", 10);
-                        huadong('.slider-minmax5', "天", "3", 7);
-                        huadong('.slider-minmax6', "天", "8", 10);
-                    </script>
 
                 </div>
             </div>

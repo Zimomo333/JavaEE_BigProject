@@ -39,16 +39,16 @@ CREATE TABLE `Staff`
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 -- 插入老板账号
-insert into Staff (account, workNum, name, sex, phone, address, IDcard, password, power, img) values('540577914', 1, '陈铭昭', '男', '13144171162', '东莞理工学院', '441284199904110037', '123456', 1, '123.jpg')
+insert into Staff (account, workNum, name, sex, phone, address, IDcard, password, power, img) values('123', 1, '梁梓豪', '男', '13144171162', '东莞理工学院', '441284199904110037', '123456', 1, '123.jpg')
 
 -- 订单
 DROP TABLE IF EXISTS `Orders`;
 CREATE TABLE `Orders`
 (
-  `orderNumber`     tinyint      NOT NULL,
+  `orderNumber`     int      NOT NULL,
   `userAccount`     char(12)     NOT NULL,
   `staffAccount`    char(12)     NULL,
-  `paid`            float        NOT NULL,
+  `paid`            double        NOT NULL,
   `address`         varchar(100) NOT NULL,
   `request`         varchar(100) NULL,
   `requestMaterial` varchar(100) NULL,

@@ -6,7 +6,7 @@ public class Orders {
     private int orderNumber;        //订 单 号
     private String userAccount;     //顾    客
     private String staffAccount;    //负 责 人
-    private float paid;             //已付金额
+    private double paid;             //已付金额
     private String address;         //送货地址
     private String request;         //用户备注
     private String requestMaterial; //所需材料
@@ -59,11 +59,11 @@ public class Orders {
         this.staffAccount = staffAccount;
     }
 
-    public float getPaid() {
+    public double getPaid() {
         return paid;
     }
 
-    public void setPaid(float paid) {
+    public void setPaid(double paid) {
         this.paid = paid;
     }
 
